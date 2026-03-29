@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mehmet Şahin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0A0A0A;--gray:#555;--lgray:#888;
+  --light:#f7f6f3;--border:#e2e1db;
+  --navy:#0F2545;--teal:#0D7E8A;
+  --white:#fff;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--white);color:var(--black);font-family:'Inter',sans-serif;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+img{max-width:100%;display:block;}
+::selection{background:var(--black);color:var(--white);}
+::-webkit-scrollbar{width:2px;}
+::-webkit-scrollbar-thumb{background:var(--black);}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;padding:0 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,.96);border-bottom:1px solid var(--border);
+  backdrop-filter:blur(8px);}
+.nav-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;letter-spacing:.02em;}
+.nav-links{display:flex;align-items:center;}
+.nav-links a{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--lgray);padding:8px 16px;border-right:1px solid var(--border);
+  transition:color .2s;}
+.nav-links a:first-child{border-left:1px solid var(--border);}
+.nav-links a:hover{color:var(--black);}
+.hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+.hbg span{display:block;width:22px;height:1.5px;background:var(--black);}
+.mmenu{display:none;position:fixed;inset:0;top:60px;background:var(--white);
+  z-index:99;flex-direction:column;padding:28px 24px;border-top:1px solid var(--border);}
+.mmenu.open{display:flex;}
+.mmenu a{display:block;padding:16px 0;font-size:14px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--lgray);border-bottom:1px solid var(--border);transition:color .2s;}
+.mmenu a:hover{color:var(--black);}
+
+/* ── ÇANAKKALE HERO ── */
+.canakkale-hero{
+  position:relative;height:100vh;min-height:600px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  overflow:hidden;
+  background:var(--navy);
+}
+/* Boğaz manzarası — CSS ile oluşturuldu */
+.canakkale-scene{
+  position:absolute;inset:0;
+  background:
+    /* Gökyüzü */
+    linear-gradient(180deg,
+      #1a3a5c 0%,#2a5f8f 25%,#4a8fbf 45%,
+      #7ab5d8 55%,#b8d9ee 65%,#e8f4fb 72%,
+      #c8e8f5 75%
+    );
+}
+/* Güneş */
+.canakkale-scene::before{
+  content:'';position:absolute;
+  top:38%;left:68%;
+  width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle,#fff8e7 0%,#ffd870 35%,#ffb020 65%,transparent 100%);
+  box-shadow:0 0 80px 40px rgba(255,200,60,.25),0 0 200px 100px rgba(255,160,20,.1);
+}
+/* Su yansıması */
+.canakkale-sea{
+  position:absolute;bottom:0;left:0;right:0;
+  height:38%;
+  background:linear-gradient(180deg,
+    #5ba3c8 0%,#3d8ab0 20%,#2a6d90 50%,#1a4f6e 80%,#0d3550 100%
+  );
+}
+/* Su ripple efekti */
+.canakkale-sea::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    0deg,transparent,transparent 12px,
+    rgba(255,255,255,.06) 12px,rgba(255,255,255,.06) 13px
+  );
+  opacity:.7;
+}
+/* Avrupa yakası kıyı */
+.canakkale-shore-eu{
+  position:absolute;bottom:37%;left:0;right:0;height:60px;
+  background:linear-gradient(180deg,transparent 0%,#1a2f1a 40%,#0d1f0d 100%);
+  clip-path:polygon(0 60%,3% 30%,8% 50%,15% 20%,22% 40%,28% 15%,35% 35%,40% 25%,45% 40%,50% 30%,55% 45%,60% 28%,65% 42%,70% 20%,75% 38%,80% 22%,85% 38%,90% 18%,95% 32%,100% 20%,100% 100%,0 100%);
+}
+/* Asya yakası kıyı */
+.canakkale-shore-as{
+  position:absolute;bottom:33%;left:0;right:0;height:55px;
+  background:linear-gradient(180deg,transparent 0%,#2a3a1a 30%,#1a2a0d 100%);
+  clip-path:polygon(0 100%,0 70%,5% 50%,12% 65%,18% 40%,25% 58%,32% 42%,38% 55%,44% 38%,50% 52%,56% 35%,62% 50%,68% 32%,74% 48%,80% 30%,86% 45%,92% 28%,100% 42%,100% 100%);
+}
+/* 1915 Çanakkale Köprüsü */
+.canakkale-bridge{
+  position:absolute;
+  bottom:calc(33% + 30px);
+  left:50%;transform:translateX(-50%);
+  width:85%;max-width:900px;
+}
+.bridge-deck{
+  position:absolute;bottom:0;left:0;right:0;
+  height:6px;background:linear-gradient(90deg,#8a7560,#c4a882,#8a7560);
+  box-shadow:0 2px 8px rgba(0,0,0,.4);
+}
+.bridge-towers{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:78%;display:flex;justify-content:space-between;
+  align-items:flex-end;
+}
+.tower{
+  width:16px;background:linear-gradient(180deg,#6e5e4a,#9a8060);
+  position:relative;
+  box-shadow:2px 0 8px rgba(0,0,0,.3);
+}
+.tower.left{height:200px;}
+.tower.right{height:200px;}
+.tower::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:22px;height:18px;background:#7a6850;clip-path:polygon(50% 0,100% 100%,0 100%);
+}
+/* Kablo yayı */
+.cable-arc{
+  position:absolute;bottom:6px;left:11%;right:11%;
+  height:160px;
+  border-top:2px solid rgba(200,180,150,.5);
+  border-radius:50% 50% 0 0;
+}
+.cable-arc::before{
+  content:'';position:absolute;bottom:0;left:5%;right:5%;
+  height:140px;
+  border-top:1px solid rgba(200,180,150,.35);
+  border-radius:50% 50% 0 0;
+}
+/* Köprüden inen kablolar */
+.cables{
+  position:absolute;bottom:6px;left:0;right:0;height:200px;
+  overflow:visible;
+}
+.cables::before,.cables::after{
+  content:'';position:absolute;bottom:0;
+  width:1px;background:rgba(180,160,130,.4);
+  transform-origin:bottom center;
+}
+/* Güneş yansıması suda */
+.sun-reflection{
+  position:absolute;
+  bottom:33%;left:65%;
+  width:4px;height:80px;
+  background:linear-gradient(180deg,rgba(255,200,60,.6),transparent);
+  filter:blur(3px);
+}
+/* Gemiler */
+.ship1,.ship2{
+  position:absolute;
+  background:linear-gradient(180deg,#8a7560,#6a5540);
+}
+.ship1{
+  bottom:calc(33% + 8px);left:20%;
+  width:70px;height:14px;border-radius:2px 8px 2px 2px;
+}
+.ship2{
+  bottom:calc(33% + 6px);left:55%;
+  width:50px;height:10px;border-radius:2px 6px 2px 2px;
+}
+.ship1::before,.ship2::before{
+  content:'';position:absolute;top:-14px;left:20%;
+  width:8px;height:14px;background:inherit;
+  border-radius:2px 2px 0 0;
+}
+/* Overlay — metin okunabilirliği */
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(
+    to bottom,
+    rgba(10,15,30,.15) 0%,
+    rgba(10,15,30,.05) 40%,
+    rgba(10,15,30,.5) 70%,
+    rgba(10,15,30,.82) 100%
+  );
+}
+/* Hero içerik */
+.hero-content{
+  position:relative;z-index:2;
+  padding:0 80px 72px;
+  display:grid;grid-template-columns:1fr 1fr;
+  align-items:end;gap:60px;
+  max-width:1300px;margin:0 auto;width:100%;
+}
+.hero-left .hero-big-quote{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(22px,2.8vw,38px);
+  font-weight:300;font-style:italic;
+  line-height:1.45;color:rgba(255,255,255,.9);
+  margin-bottom:14px;
+}
+.hero-source{
+  font-size:11px;font-weight:600;letter-spacing:.25em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);
+}
+.hero-right{
+  border-top:2px solid rgba(255,255,255,.25);
+  padding-top:24px;
+}
+.hero-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(36px,4.5vw,64px);
+  font-weight:700;line-height:1;
+  color:var(--white);margin-bottom:10px;
+}
+.hero-title{
+  font-size:12px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.6);line-height:1.9;margin-bottom:24px;
+}
+.hero-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px;}
+.pill{
+  font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,.3);
+  padding:5px 14px;color:rgba(255,255,255,.8);
+  transition:all .2s;
+}
+.pill:hover{background:rgba(255,255,255,.15);}
+.hero-btns{display:flex;gap:14px;}
+.hbtn-p{
+  font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--black);background:var(--white);
+  padding:12px 24px;transition:all .2s;
+}
+.hbtn-p:hover{background:rgba(255,255,255,.85);}
+.hbtn-s{
+  font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.8);
+  border-bottom:1.5px solid rgba(255,255,255,.4);padding-bottom:2px;
+  transition:color .2s,border-color .2s;
+}
+.hbtn-s:hover{color:var(--white);border-color:var(--white);}
+.hero-caption{
+  position:absolute;bottom:16px;right:80px;z-index:2;
+  font-size:10px;font-weight:300;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.35);
+}
+
+/* ── SECTIONS ── */
+.full-rule{width:100%;height:1px;background:var(--border);}
+
+.main-sec{
+  max-width:1200px;margin:0 auto;padding:80px 48px;
+  display:grid;grid-template-columns:240px 1fr;gap:72px;
+  border-bottom:1px solid var(--border);
+}
+.sec-label{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(28px,2.5vw,40px);
+  font-weight:600;line-height:1;
+  position:sticky;top:72px;align-self:start;
+}
+.sec-content{}
+.sec-lead{
+  font-size:15px;font-weight:300;line-height:1.95;
+  color:var(--gray);margin-bottom:24px;
+}
+.sec-lead strong{color:var(--black);font-weight:600;}
+.sec-quote{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:19px;font-weight:300;
+  line-height:1.65;color:var(--black);
+  border-left:3px solid var(--black);
+  padding:16px 24px;margin:28px 0;
+  background:var(--light);
+}
+.sec-cta{
+  font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--black);border-bottom:2px solid var(--black);
+  padding-bottom:3px;display:inline-flex;align-items:center;gap:8px;
+  transition:color .2s,border-color .2s;
+}
+.sec-cta:hover{color:var(--teal);border-color:var(--teal);}
+
+/* ── TIMELINE ── */
+.tl-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.tl-item{padding:22px 0;border-top:1px solid var(--border);}
+.tl-item:nth-child(odd){padding-right:28px;border-right:1px solid var(--border);}
+.tl-item:nth-child(even){padding-left:28px;}
+.tl-year{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--lgray);margin-bottom:5px;}
+.tl-role{font-size:15px;font-weight:600;margin-bottom:3px;}
+.tl-place{font-size:13px;font-weight:300;color:var(--lgray);}
+
+/* ── COURSES ── */
+.courses-list{display:flex;flex-direction:column;}
+.course-item{
+  display:grid;grid-template-columns:90px 1fr auto;
+  align-items:center;gap:20px;
+  padding:20px 0;border-top:1px solid var(--border);
+  transition:background .2s;
+}
+.course-item:hover{background:var(--light);padding:20px 12px;margin:0 -12px;}
+.course-thumb{
+  width:90px;height:60px;overflow:hidden;
+  object-fit:cover;background:var(--light);
+  flex-shrink:0;
+}
+.course-thumb-placeholder{
+  width:90px;height:60px;
+  background:linear-gradient(135deg,var(--light),#e0dfd8);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;flex-shrink:0;
+}
+.course-num{font-size:10px;font-weight:700;letter-spacing:.25em;color:var(--lgray);margin-bottom:4px;}
+.course-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;margin-bottom:4px;}
+.course-desc{font-size:12px;font-weight:300;color:var(--lgray);line-height:1.6;}
+.course-badge{
+  font-size:9px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+  border:1.5px solid var(--border);padding:5px 12px;white-space:nowrap;
+}
+
+/* ── BOOKS ── */
+.books-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:24px;
+}
+.book-item{cursor:default;}
+.book-cover{
+  width:100%;aspect-ratio:3/4;
+  overflow:hidden;background:var(--light);
+  border:1px solid var(--border);
+  margin-bottom:12px;
+  transition:box-shadow .3s,transform .3s;
+}
+.book-cover:hover{
+  box-shadow:0 12px 40px rgba(0,0,0,.15);
+  transform:translateY(-3px);
+}
+.book-cover img{width:100%;height:100%;object-fit:cover;}
+.book-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:14px;font-weight:600;line-height:1.35;margin-bottom:4px;
+}
+.book-meta{font-size:11px;font-weight:300;color:var(--lgray);}
+
+/* ── SLIDER ── */
+.slider-section{border-bottom:1px solid var(--border);}
+.slider-header{
+  max-width:1200px;margin:0 auto;
+  padding:24px 48px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid var(--border);
+}
+.slider-lbl{font-size:11px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--lgray);}
+.sctrls{display:flex;gap:4px;}
+.sc{width:36px;height:36px;border:1px solid var(--border);background:var(--white);
+  cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.sc:hover{background:var(--black);color:var(--white);border-color:var(--black);}
+.slider-wrap{overflow:hidden;}
+.slider-track{display:flex;transition:transform .4s ease;}
+.pub-slide{
+  flex:0 0 33.333%;padding:32px 48px;
+  border-right:1px solid var(--border);
+  min-height:200px;display:flex;flex-direction:column;justify-content:space-between;
+  transition:background .2s;
+}
+.pub-slide:hover{background:var(--light);}
+.pub-cat{font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--lgray);margin-bottom:10px;}
+.pub-img{width:100%;height:80px;object-fit:cover;margin-bottom:12px;opacity:.85;}
+.pub-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;line-height:1.3;margin-bottom:6px;}
+.pub-src{font-size:11px;font-weight:300;color:var(--lgray);margin-bottom:16px;}
+.pub-cta{
+  font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--black);border-bottom:1.5px solid var(--black);
+  padding-bottom:2px;display:inline-block;transition:color .2s;
+}
+.pub-cta:hover{color:var(--teal);}
+
+/* ── CONTACT ── */
+.contact-sec{
+  max-width:1200px;margin:0 auto;padding:80px 48px;
+  display:grid;grid-template-columns:1fr 1fr;gap:72px;
+}
+.ci-list{display:flex;flex-direction:column;gap:0;margin-top:16px;}
+.ci{padding:20px 0;border-bottom:1px solid var(--border);}
+.ci:first-child{border-top:1px solid var(--border);}
+.ci-lbl{font-size:10px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--lgray);margin-bottom:5px;}
+.ci-val{font-size:15px;font-weight:300;}
+.ci-val a{border-bottom:1px solid transparent;transition:border-color .2s;}
+.ci-val a:hover{border-color:var(--black);}
+.srow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.slink{
+  font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  border:1.5px solid var(--border);padding:7px 14px;
+  transition:all .2s;
+}
+.slink:hover{background:var(--black);color:var(--white);border-color:var(--black);}
+.form{display:flex;flex-direction:column;gap:12px;margin-top:16px;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fi{width:100%;padding:14px 16px;background:var(--white);border:1px solid var(--border);
+  outline:none;resize:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:300;
+  color:var(--black);transition:border-color .2s;}
+.fi:focus{border-color:var(--black);}
+.fi::placeholder{color:#bbb;}
+.fta{min-height:120px;}
+.fsub{
+  font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--white);background:var(--black);
+  border:none;padding:15px;cursor:pointer;transition:background .2s;text-align:left;
+}
+.fsub:hover{background:var(--teal);}
+
+/* ── FOOTER ── */
+footer{background:var(--black);color:rgba(255,255,255,.45);padding:48px;}
+.ft-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:32px;margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,.1);}
+.ft-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--white);margin-bottom:4px;}
+.ft-sub{font-size:11px;margin-top:4px;}
+.ft-links{display:flex;flex-wrap:wrap;gap:20px;}
+.ft-links a{font-size:11px;font-weight:400;letter-spacing:.08em;transition:color .2s;}
+.ft-links a:hover{color:var(--white);}
+.ft-copy{font-size:11px;}
+
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;}
+.rv.vis{opacity:1;transform:translateY(0);}
+.d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}.d4{transition-delay:.4s;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  .nav-links{display:none!important;}
+  .hbg{display:flex!important;}
+  nav{padding:0 24px;}
+}
+@media(max-width:900px){
+  .hero-content{grid-template-columns:1fr;padding:0 24px 60px;gap:40px;}
+  .hero-left{display:none;}
+  .main-sec{grid-template-columns:1fr;padding:56px 24px;gap:24px;}
+  .sec-label{position:static;font-size:32px;}
+  .tl-grid{grid-template-columns:1fr;}
+  .tl-item:nth-child(odd){border-right:none;padding-right:0;}
+  .tl-item:nth-child(even){padding-left:0;}
+  .books-grid{grid-template-columns:1fr 1fr;}
+  .pub-slide{flex:0 0 85%;padding:24px;}
+  .slider-header{padding:20px 24px;}
+  .contact-sec{grid-template-columns:1fr;padding:56px 24px;}
+  .hero-caption{display:none;}
+  footer{padding:32px 24px;}
+}
+@media(max-width:600px){
+  .books-grid{grid-template-columns:1fr 1fr;}
+  .fr{grid-template-columns:1fr;}
+  .course-item{grid-template-columns:60px 1fr;}
+  .course-badge{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-name">Mehmet Şahin</div>
+  <div class="nav-links">
+    <a href="#akademisyen">Akademisyen</a>
+    <a href="#dersler">Dersler</a>
+    <a href="#yazar">Yazar</a>
+    <a href="#danismanlik">Danışman</a>
+    <a href="#iletisim">İletişim</a>
+  </div>
+  <div class="hbg" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mmenu" id="mm">
+  <a href="#akademisyen" onclick="toggleMenu()">Akademisyen</a>
+  <a href="#dersler" onclick="toggleMenu()">Dersler</a>
+  <a href="#yazar" onclick="toggleMenu()">Yazar</a>
+  <a href="#danismanlik" onclick="toggleMenu()">Danışman</a>
+  <a href="#iletisim" onclick="toggleMenu()">İletişim</a>
+</div>
+
+<!-- ÇANAKKALE HERO -->
+<div class="canakkale-hero">
+  <div class="canakkale-scene"></div>
+  <div class="canakkale-sea"></div>
+  <div class="canakkale-shore-eu"></div>
+  <div class="canakkale-shore-as"></div>
+  <!-- 1915 Köprüsü -->
+  <div class="canakkale-bridge">
+    <div class="cable-arc"></div>
+    <div class="bridge-towers">
+      <div class="tower left"></div>
+      <div class="tower right"></div>
+    </div>
+    <div class="bridge-deck"></div>
+  </div>
+  <div class="sun-reflection"></div>
+  <div class="ship1"></div>
+  <div class="ship2"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <p class="hero-big-quote">
+        "Kazakistan ile işbirliği ve sivil dayanışmayı<br>
+        geliştiren bilim insanlarının en üst düzey onuru."
+      </p>
+      <div class="hero-source">Birlik (Unity) Altın Madalyası — Kazakistan</div>
+    </div>
+    <div class="hero-right">
+      <h1 class="hero-name">Mehmet<br>Şahin</h1>
+      <p class="hero-title">
+        Prof. Dr. · Çanakkale Onsekiz Mart Üniversitesi<br>
+        Baş Editör · Journal of Awareness · Holistic Economics<br>
+        Kurucu CEO · Holistence Academy
+      </p>
+      <div class="hero-pills">
+        <span class="pill">Akademisyen</span>
+        <span class="pill">Editör</span>
+        <span class="pill">Yazar</span>
+        <span class="pill">Girişimci</span>
+        <span class="pill">Sivil Toplum</span>
+      </div>
+      <div class="hero-btns">
+        <a href="#akademisyen" class="hbtn-p">Özgeçmiş →</a>
+        <a href="#yazar" class="hbtn-s">Yayınlar →</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-caption">Çanakkale Boğazı · 1915 Çanakkale Köprüsü</div>
+</div>
+
+<div class="full-rule"></div>
+
+<!-- SLIDES — SON ÇALIŞMALAR -->
+<div class="slider-section">
+  <div class="slider-header">
+    <span class="slider-lbl">Son Çalışmalar & Yayınlar</span>
+    <div class="sctrls">
+      <button class="sc" onclick="slide(-1)">←</button>
+      <button class="sc" onclick="slide(1)">→</button>
+    </div>
+  </div>
+  <div class="slider-wrap">
+    <div class="slider-track" id="slider">
+      <div class="pub-slide">
+        <div>
+          <div class="pub-cat">Kitap</div>
+          <img src="images/ekonomik-ve-cev.jpg" alt="Ekonomik ve Çevresel" class="pub-img">
+          <div class="pub-title">Ekonomik ve Çevresel Yaklaşımlar</div>
+          <div class="pub-src">Yayın Bilgisi Eklenecek</div>
+        </div>
+        <a href="#yazar" class="pub-cta">Detay →</a>
+      </div>
+      <div class="pub-slide">
+        <div>
+          <div class="pub-cat">Kitap</div>
+          <img src="images/yapay-zeka.jpg" alt="Yapay Zeka" class="pub-img">
+          <div class="pub-title">Yapay Zeka</div>
+          <div class="pub-src">Yayın Bilgisi Eklenecek</div>
+        </div>
+        <a href="#yazar" class="pub-cta">Detay →</a>
+      </div>
+      <div class="pub-slide">
+        <div>
+          <div class="pub-cat">Kitap</div>
+          <img src="images/yasam-kal.jpg" alt="Yaşam Kalitesi" class="pub-img">
+          <div class="pub-title">Yaşam Kalitesi</div>
+          <div class="pub-src">Yayın Bilgisi Eklenecek</div>
+        </div>
+        <a href="#yazar" class="pub-cta">Detay →</a>
+      </div>
+      <div class="pub-slide">
+        <div>
+          <div class="pub-cat">Kitap</div>
+          <img src="images/economy-and-bus.jpg" alt="Economy and Business" class="pub-img">
+          <div class="pub-title">Economy and Business</div>
+          <div class="pub-src">Yayın Bilgisi Eklenecek</div>
+        </div>
+        <a href="#yazar" class="pub-cta">Detay →</a>
+      </div>
+      <div class="pub-slide">
+        <div>
+          <div class="pub-cat">Makale Eklenecek</div>
+          <div class="pub-title">Akademik makale başlığınız buraya gelecek</div>
+          <div class="pub-src">Dergi · Yıl</div>
+        </div>
+        <a href="#" class="pub-cta">Makaleyi oku →</a>
+      </div>
+      <div class="pub-slide" style="border-right:none;">
+        <div>
+          <div class="pub-cat">Proje</div>
+          <img src="images/proje.jpg" alt="Proje" class="pub-img">
+          <div class="pub-title">Araştırma Projesi Başlığı</div>
+          <div class="pub-src">Proje Bilgisi Eklenecek</div>
+        </div>
+        <a href="#" class="pub-cta">Detay →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AKADEMİSYEN -->
+<div class="main-sec rv" id="akademisyen">
+  <div class="sec-label">Akademisyen</div>
+  <div class="sec-content">
+    <p class="sec-lead">
+      Prof. Dr. Mehmet Şahin, <strong>Çanakkale Onsekiz Mart Üniversitesi</strong>'nde Ekonomi alanında Profesör olarak görev yapmakta; kamu maliyesi, enerji ekonomisi ve girişimcilik alanlarında dersler vermektedir.
+    </p>
+    <p class="sec-lead">
+      1994'te Maliye yüksek lisansını, 1998'de iktisat doktorasını Anadolu Üniversitesi'nde tamamladı. Akademik kariyerine Dumlupınar Üniversitesi'nde başlayan Şahin, ÇOMÜ'de Meslek Yüksek Okulu Müdürlüğü, Bölüm Başkanlığı, Dekan Yardımcılığı ve Rektör Danışmanlığı gibi idari görevler de üstlendi.
+    </p>
+    <div class="sec-quote">
+      "Nerede ve nasıl başladığın ya da nerede ve nasıl bitirdiğin değil; nerede ve nasıl başlayıp nerede ve nasıl bitirdiğin önemlidir."
+    </div>
+    <div class="tl-grid" style="margin-top:8px;">
+      <div class="tl-item"><div class="tl-year">2019 — Günümüz</div><div class="tl-role">Prof. Dr.</div><div class="tl-place">Çanakkale Onsekiz Mart Üniversitesi</div></div>
+      <div class="tl-item"><div class="tl-year">2009 — 2019</div><div class="tl-role">Doç. Dr.</div><div class="tl-place">Çanakkale Onsekiz Mart Üniversitesi</div></div>
+      <div class="tl-item"><div class="tl-year">1998 — 2009</div><div class="tl-role">Doktor Öğretim Üyesi</div><div class="tl-place">Çanakkale Onsekiz Mart Üniversitesi</div></div>
+      <div class="tl-item"><div class="tl-year">1994 — 1998</div><div class="tl-role">Araştırma Görevlisi</div><div class="tl-place">Dumlupınar Üniversitesi</div></div>
+      <div class="tl-item"><div class="tl-year">1998 — Doktora</div><div class="tl-role">İktisat</div><div class="tl-place">Anadolu Üniversitesi</div></div>
+      <div class="tl-item"><div class="tl-year">1994 — Yüksek Lisans</div><div class="tl-role">Maliye</div><div class="tl-place">Anadolu Üniversitesi</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DERSLER -->
+<div class="main-sec rv" id="dersler">
+  <div class="sec-label">Dersler</div>
+  <div class="sec-content">
+    <p class="sec-lead">
+      Lisans düzeyinde verilen dersler için slayt ve video materyalleri aşağıdan erişilebilir.
+    </p>
+    <div class="courses-list">
+      <div class="course-item">
+        <img src="images/kamu-styk.jpg" alt="Kamu Maliyesi" class="course-thumb" onerror="this.style.display='none'">
+        <div><div class="course-num">01</div><div class="course-name">Kamu Maliyesi</div><div class="course-desc">Kamu harcamaları, vergileme teorisi, bütçe politikaları ve mali sürdürülebilirlik.</div></div>
+        <span class="course-badge">Slayt + Video</span>
+      </div>
+      <div class="course-item">
+        <img src="images/enerji-kaynaklari.jpg" alt="Enerji" class="course-thumb" onerror="this.style.display='none'">
+        <div><div class="course-num">02</div><div class="course-name">Enerji Ekonomisi</div><div class="course-desc">Enerji piyasaları, politikaları, yenilenebilir enerji ve iklim değişikliği ekonomisi.</div></div>
+        <span class="course-badge">Slayt + Video</span>
+      </div>
+      <div class="course-item">
+        <div class="course-thumb-placeholder">📈</div>
+        <div><div class="course-num">03</div><div class="course-name">Genel Ekonomi</div><div class="course-desc">Mikro ve makroekonomi temelleri, piyasa mekanizmaları, ekonomik analiz yöntemleri.</div></div>
+        <span class="course-badge">Slayt + Video</span>
+      </div>
+      <div class="course-item">
+        <div class="course-thumb-placeholder">👥</div>
+        <div><div class="course-num">04</div><div class="course-name">İnsan Kaynakları Yönetimi</div><div class="course-desc">Personel yönetimi, örgütsel davranış, işe alım ve performans değerlendirme sistemleri.</div></div>
+        <span class="course-badge">Slayt + Video</span>
+      </div>
+      <div class="course-item">
+        <div class="course-thumb-placeholder">🚀</div>
+        <div><div class="course-num">05</div><div class="course-name">Girişimcilik</div><div class="course-desc">İş fikri geliştirme, iş planı yazımı, finansman ve girişimci ekosistemi.</div></div>
+        <span class="course-badge">Slayt + Video</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KİTAPLAR / YAZAR -->
+<div class="main-sec rv" id="yazar">
+  <div class="sec-label">Yazar</div>
+  <div class="sec-content">
+    <p class="sec-lead">
+      Ekonomi, kamu maliyesi ve girişimcilik alanlarında çok sayıda kitap ve akademik makalenin yazarı ve editörü. <strong>Journal of Awareness</strong> ve <strong>Holistic Economics</strong> dergilerinin baş editörü.
+    </p>
+    <div class="books-grid">
+      <div class="book-item">
+        <div class="book-cover"><img src="images/ekonomik-ve-cev.jpg" alt="Ekonomik ve Çevresel"></div>
+        <div class="book-title">Ekonomik ve Çevresel Yaklaşımlar</div>
+        <div class="book-meta">Yayın bilgisi eklenecek</div>
+      </div>
+      <div class="book-item">
+        <div class="book-cover"><img src="images/yapay-zeka.jpg" alt="Yapay Zeka"></div>
+        <div class="book-title">Yapay Zeka</div>
+        <div class="book-meta">Yayın bilgisi eklenecek</div>
+      </div>
+      <div class="book-item">
+        <div class="book-cover"><img src="images/yasam-kal.jpg" alt="Yaşam Kalitesi"></div>
+        <div class="book-title">Yaşam Kalitesi</div>
+        <div class="book-meta">Yayın bilgisi eklenecek</div>
+      </div>
+      <div class="book-item">
+        <div class="book-cover"><img src="images/economy-and-bus.jpg" alt="Economy and Business"></div>
+        <div class="book-title">Economy and Business</div>
+        <div class="book-meta">Yayın bilgisi eklenecek</div>
+      </div>
+      <div class="book-item">
+        <div class="book-cover"><img src="images/society-5.jpg" alt="Society 5.0"></div>
+        <div class="book-title">Society 5.0</div>
+        <div class="book-meta">Yayın bilgisi eklenecek</div>
+      </div>
+      <div class="book-item">
+        <div class="book-cover"><img src="images/toplum-5.jpg" alt="Toplum 5.0"></div>
+        <div class="book-title">Toplum 5.0</div>
+        <div class="book-meta">Yayın bilgisi eklenecek</div>
+      </div>
+      <div class="book-item">
+        <div class="book-cover"><img src="images/yenilikci.jpg" alt="Yenilikçi"></div>
+        <div class="book-title">Yenilikçi Yaklaşımlar</div>
+        <div class="book-meta">Yayın bilgisi eklenecek</div>
+      </div>
+      <div class="book-item">
+        <div class="book-cover"><img src="images/koso.png" alt="Köso"></div>
+        <div class="book-title">Diğer Yayın</div>
+        <div class="book-meta">Yayın bilgisi eklenecek</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DANIŞMANLIK -->
+<div class="main-sec rv" id="danismanlik">
+  <div class="sec-label">Danışman<br>&amp; Girişimci</div>
+  <div class="sec-content">
+    <p class="sec-lead">
+      2016 yılında Çanakkale Teknopark'ta kurduğu <strong>Holistence Academy</strong>'nin kurucu CEO'su olarak akademi ile sanayi arasında köprü kurmaktadır.
+    </p>
+    <p class="sec-lead">
+      YAKALDER (Yaşam Kalitesi Derneği) kurucusu ve 2023–2025 yılları arasında Birleşik Kamu-İş Konfederasyonu Çanakkale İl Başkanlığı görevini yürüttü.
+    </p>
+    <div class="sec-quote">
+      "İyilik de kötülük de içimizdedir. Hangisini göstermek istediğiniz size kalmış."
+    </div>
+    <p class="sec-lead">
+      Kazakistan ile işbirliği ve sivil dayanışmayı geliştiren bilim insanlarına verilen <strong>Birlik (Unity) Altın Madalyasına</strong> layık görülmüştür.
+    </p>
+    <div style="display:flex;gap:16px;margin-top:16px;">
+      <img src="images/madalya.jpg" alt="Altın Madalya" style="width:180px;height:140px;object-fit:cover;border:1px solid var(--border);">
+      <img src="images/msahin-sunu.jpg" alt="Sunum" style="width:220px;height:140px;object-fit:cover;border:1px solid var(--border);">
+    </div>
+  </div>
+</div>
+
+<!-- İLETİŞİM -->
+<div class="contact-sec rv" id="iletisim">
+  <div>
+    <div class="sec-label">İletişim</div>
+    <div class="ci-list">
+      <div class="ci"><div class="ci-lbl">E-posta</div><div class="ci-val"><a href="mailto:mehmetsahin@comu.edu.tr">mehmetsahin@comu.edu.tr</a></div></div>
+      <div class="ci"><div class="ci-lbl">Telefon</div><div class="ci-val"><a href="tel:+905554770055">+90 555 477 00 55</a></div></div>
+      <div class="ci"><div class="ci-lbl">Adres</div><div class="ci-val" style="font-size:14px;">ÇOMÜ Çanakkale Uygulamalı Bilimler Fak.<br>Sosyal Hizmet Bölümü Kat:2 No:25<br>Çanakkale / Türkiye</div></div>
+      <div class="ci" style="border-bottom:none;"><div class="ci-lbl">Sosyal Medya</div>
+        <div class="srow">
+          <a href="https://www.linkedin.com/in/mehmet-%C5%9Fahin-69383846/" target="_blank" class="slink">LinkedIn</a>
+          <a href="https://x.com/mehmetsahin17" target="_blank" class="slink">X/Twitter</a>
+          <a href="https://www.instagram.com/msahin1967/" target="_blank" class="slink">Instagram</a>
+          <a href="https://www.facebook.com/mehmetsahin1967" target="_blank" class="slink">Facebook</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p style="font-size:15px;font-weight:300;color:var(--gray);margin-bottom:20px;line-height:1.8;">Araştırma işbirliği, ders materyalleri veya danışmanlık için iletişime geçin.</p>
+    <form class="form" onsubmit="return false;">
+      <div class="fr"><input class="fi" type="text" placeholder="Adınız Soyadınız"><input class="fi" type="email" placeholder="E-posta"></div>
+      <input class="fi" type="text" placeholder="Konu">
+      <textarea class="fi fta" placeholder="Mesajınız..."></textarea>
+      <button class="fsub">Mesaj Gönder →</button>
+    </form>
+  </div>
+</div>
+
+<div class="full-rule"></div>
+
+<footer>
+  <div class="ft-top">
+    <div><div class="ft-name">Mehmet Şahin</div><div class="ft-sub">Prof. Dr. · ÇOMÜ · Journal of Awareness · Holistic Economics · Holistence Academy</div></div>
+    <div class="ft-links">
+      <a href="#akademisyen">Akademisyen</a>
+      <a href="#dersler">Dersler</a>
+      <a href="#yazar">Yazar</a>
+      <a href="#danismanlik">Danışman</a>
+      <a href="#iletisim">İletişim</a>
+      <a href="https://holistence.com" target="_blank">Holistence.com</a>
+    </div>
+  </div>
+  <div class="ft-copy">© 2025 Mehmet Şahin · mehmetsahin@comu.edu.tr · Çanakkale</div>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{
+  let c='';
+  document.querySelectorAll('[id]').forEach(s=>{if(window.scrollY>=s.offsetTop-80)c=s.id;});
+  document.querySelectorAll('.nav-links a').forEach(a=>a.style.fontWeight=a.getAttribute('href')==='#'+c?'600':'500');
+});
+function toggleMenu(){document.getElementById('mm').classList.toggle('open');}
+// Slider
+let idx=0;
+const trk=document.getElementById('slider');
+function slide(d){
+  const slides=trk.querySelectorAll('.pub-slide');
+  const vis=window.innerWidth>900?3:1;
+  idx=Math.max(0,Math.min(idx+d,slides.length-vis));
+  trk.style.transform=`translateX(-${idx*(100/vis)}%)`;
+}
+// Reveal
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');}),{threshold:0.07});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
